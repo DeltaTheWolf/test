@@ -34,9 +34,9 @@
 
     curl_setopt($ch,CURLOPT_URL, $url);
 
-    if($method == "POST") {
+    if($method == "POST" || $method == "PUT" ) {
       $data_str = file_get_contents('php://input');
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
     }
 
