@@ -39,7 +39,9 @@
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
     }
-
+    elseif($method == "DELETE") {
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+    }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers_str );
 
