@@ -33,15 +33,27 @@
     $ch = curl_init($url);
 
     curl_setopt($ch,CURLOPT_URL, $url);
-
-    if($method == "POST" || $method == "PUT" ) {
-      $data_str = file_get_contents('php://input');
+    if( $method !== 'GET') {
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+    }
+
+    if($method == "PUT" || ($method == "POST" && empty($_FILES))) {
+      $data_str = file_get_contents('php://input');
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
     }
-    elseif($method == "DELETE") {
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+    elseif($method == "POST") {
+      $data_str = array();
+      if(!empty($_FILES)) {
+        foreach ($_FILES as $key => $value) {
+          $full_path = realpath( $_FILES[$key]['tmp_name']);
+          $data_str[$key] = '@'.$full_path;
+        }
+      }
+      //error_log($method.': '.serialize($data_str+$_POST).'\n',3, 'err.log');
+
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str+$_POST);
     }
+
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers_str );
 
