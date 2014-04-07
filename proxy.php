@@ -40,7 +40,7 @@
     if($method == "PUT" || $method == "PATCH" || ($method == "POST" && empty($_FILES))) {
       $data_str = file_get_contents('php://input');
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
-      error_log($method.': '.$data_str.serialize($_POST).'\n',3, 'err.log');
+      //error_log($method.': '.$data_str.serialize($_POST).'\n',3, 'err.log');
     }
     elseif($method == "POST") {
       $data_str = array();
