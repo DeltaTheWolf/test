@@ -37,9 +37,10 @@
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
     }
 
-    if($method == "PUT" || ($method == "POST" && empty($_FILES))) {
+    if($method == "PUT" || $method == "PATCH" || ($method == "POST" && empty($_FILES))) {
       $data_str = file_get_contents('php://input');
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
+      error_log($method.': '.$data_str.serialize($_POST).'\n',3, 'err.log');
     }
     elseif($method == "POST") {
       $data_str = array();
@@ -62,4 +63,12 @@
 
     header('Content-Type: application/json');
     echo $result;
+  }
+  else {
+    echo $method;
+    var_dump($_POST);
+    var_dump($_GET);
+    $data_str = file_get_contents('php://input');
+    echo $data_str;
+
   }
